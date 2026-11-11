@@ -50,3 +50,4 @@ pip install -r requirements.txt
 python demo/app_gradio.py
 ```
 Giao diện sẽ khởi chạy tại: `http://127.0.0.1:7860`.
+
