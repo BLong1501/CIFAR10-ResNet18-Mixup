@@ -109,6 +109,45 @@ st.markdown("""
         background-color: #0284c7;
     }
 
+    /* Ép tất cả nhãn widget, chữ hướng dẫn sang màu xanh đen đậm rõ nét */
+    label, .stSlider label, .stFileUploader label, [data-testid="stWidgetLabel"] p {
+        color: #0f172a !important;
+        font-weight: 600 !important;
+        font-size: 15px !important;
+    }
+    
+    /* Khung tải file Uploader: Nền trắng viền xanh, xóa bỏ hoàn toàn ô đen */
+    [data-testid="stFileUploader"] section {
+        background-color: #ffffff !important;
+        border: 2px dashed #93c5fd !important;
+        border-radius: 12px !important;
+        color: #1e293b !important;
+        padding: 20px !important;
+    }
+    [data-testid="stFileUploader"] section:hover {
+        border-color: #0284c7 !important;
+        background-color: #f0f9ff !important;
+    }
+    [data-testid="stFileUploader"] section * {
+        color: #334155 !important;
+    }
+    [data-testid="stFileUploader"] section button {
+        background-color: #0284c7 !important;
+        color: #ffffff !important;
+        border: none !important;
+        border-radius: 8px !important;
+        font-weight: 500 !important;
+    }
+    [data-testid="stFileUploader"] section button * {
+        color: #ffffff !important;
+    }
+
+    /* Slider chữ và số */
+    [data-testid="stSlider"] div, [data-testid="stThumbValue"] {
+        color: #0369a1 !important;
+        font-weight: 600 !important;
+    }
+
     /* Ẩn bớt footer và menu mặc định */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
