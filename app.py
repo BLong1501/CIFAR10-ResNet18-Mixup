@@ -196,8 +196,11 @@ def get_model():
     candidate_paths = [
         os.path.join(os.path.dirname(__file__), "outputs", "best_model_resnet18.pt"),
         "./outputs/best_model_resnet18.pt",
-        "../outputs/best_model_resnet18.pt",
-        "best_model_resnet18.pt"
+        "best_model_resnet18.pt",
+        os.path.join(os.path.dirname(__file__), "outputs", "baseline_resnet18.pt"),
+        "./outputs/baseline_resnet18.pt",
+        "../outputs/baseline_resnet18.pt",
+        "baseline_resnet18.pt"
     ]
     
     loaded_checkpoint = None

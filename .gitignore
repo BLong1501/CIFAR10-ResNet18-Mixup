@@ -6,6 +6,7 @@ data/
 # Bỏ qua checkpoint nặng nếu vượt giới hạn GitHub (GitHub chặn file > 100MB)
 *.pt
 *.pth
+!outputs/*.pt
 
 # Python / Jupyter cache
 __pycache__/
