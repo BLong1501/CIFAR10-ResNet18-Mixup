@@ -18,7 +18,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS phong cách Trắng - Xanh biển học thuật, thanh lịch
+# Custom CSS phong cách Trắng - Xanh biển học thuật, tỷ lệ chuẩn màn hình lớn
 st.markdown("""
 <style>
     /* Nền trang web */
@@ -28,101 +28,88 @@ st.markdown("""
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
     
-    /* Header chính màu xanh biển */
+    /* Căn chỉnh độ rộng khối giao diện chính để không bị co cụm hoặc quá bẹt */
+    .main .block-container {
+        max-width: 1280px !important;
+        padding-top: 1.8rem !important;
+        padding-bottom: 3rem !important;
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+        margin: 0 auto !important;
+    }
+    
+    /* Header chính màu xanh biển sâu trang nhã */
     .main-header {
         background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
         color: #ffffff;
-        padding: 24px 32px;
-        border-radius: 12px;
-        margin-bottom: 24px;
-        box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
+        padding: 30px 36px;
+        border-radius: 14px;
+        margin-bottom: 28px;
+        box-shadow: 0 6px 20px rgba(2, 132, 199, 0.16);
         text-align: center;
     }
     .main-header h1 {
         color: #ffffff !important;
-        font-size: 26px !important;
+        font-size: 30px !important;
         font-weight: 700;
         letter-spacing: 0.5px;
-        margin: 0 0 8px 0;
+        margin: 0 0 10px 0;
     }
     .main-header p {
         color: #e0f2fe !important;
-        font-size: 14px;
+        font-size: 15px;
         margin: 0;
+        font-weight: 400;
     }
     .author-badge {
         display: inline-block;
-        background: rgba(255, 255, 255, 0.18);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        padding: 4px 14px;
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        padding: 6px 18px;
         border-radius: 20px;
-        font-size: 13px;
-        margin-top: 10px;
-        font-weight: 500;
+        font-size: 14px;
+        margin-top: 14px;
+        font-weight: 600;
         color: #ffffff;
+        letter-spacing: 0.3px;
     }
 
-    /* Khối thẻ hộp màu trắng */
-    .content-card {
+    /* Khối thẻ hộp chính màu trắng (Card Container) */
+    .ui-card {
         background-color: #ffffff;
         border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 24px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
-        height: 100%;
-    }
-
-    /* Tiêu đề mục */
-    .section-title {
-        font-size: 18px;
-        font-weight: 700;
-        color: #0369a1;
-        margin-bottom: 16px;
-        padding-bottom: 8px;
-        border-bottom: 2px solid #e0f2fe;
+        border-radius: 14px;
+        padding: 26px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+        min-height: 480px;
         display: flex;
-        align-items: center;
-        gap: 8px;
+        flex-direction: column;
     }
 
-    /* Kết quả dự đoán nổi bật */
-    .prediction-box {
-        background: #f0f9ff;
-        border: 1px solid #bae6fd;
-        border-radius: 10px;
-        padding: 16px 20px;
-        margin-bottom: 16px;
-    }
-    .prediction-label {
-        font-size: 22px;
+    /* Tiêu đề từng cột */
+    .section-title {
+        font-size: 20px;
         font-weight: 700;
         color: #0369a1;
-        margin-bottom: 4px;
-    }
-    .prediction-sub {
-        font-size: 13px;
-        color: #64748b;
+        margin-bottom: 18px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #e0f2fe;
     }
 
-    /* Chỉnh màu thanh tiến trình Streamlit */
-    .stProgress > div > div > div > div {
-        background-color: #0284c7;
-    }
-
-    /* Ép tất cả nhãn widget, chữ hướng dẫn sang màu xanh đen đậm rõ nét */
-    label, .stSlider label, .stFileUploader label, [data-testid="stWidgetLabel"] p {
+    /* Ép tất cả nhãn widget, chữ hiển thị sang màu đen xanh than đậm rõ nét */
+    label, [data-testid="stWidgetLabel"], [data-testid="stWidgetLabel"] p, .stSlider label {
         color: #0f172a !important;
         font-weight: 600 !important;
         font-size: 15px !important;
     }
-    
-    /* Khung tải file Uploader: Nền trắng viền xanh, xóa bỏ hoàn toàn ô đen */
+
+    /* Khung tải file Uploader: Nền trắng viền xanh, loại bỏ hoàn toàn ô đen */
     [data-testid="stFileUploader"] section {
         background-color: #ffffff !important;
         border: 2px dashed #93c5fd !important;
         border-radius: 12px !important;
-        color: #1e293b !important;
-        padding: 20px !important;
+        padding: 24px 16px !important;
+        min-height: 120px !important;
     }
     [data-testid="stFileUploader"] section:hover {
         border-color: #0284c7 !important;
@@ -130,22 +117,50 @@ st.markdown("""
     }
     [data-testid="stFileUploader"] section * {
         color: #334155 !important;
+        font-size: 14px !important;
     }
     [data-testid="stFileUploader"] section button {
         background-color: #0284c7 !important;
         color: #ffffff !important;
         border: none !important;
         border-radius: 8px !important;
-        font-weight: 500 !important;
+        font-weight: 600 !important;
+        padding: 8px 20px !important;
     }
     [data-testid="stFileUploader"] section button * {
         color: #ffffff !important;
     }
 
     /* Slider chữ và số */
-    [data-testid="stSlider"] div, [data-testid="stThumbValue"] {
+    [data-testid="stSlider"] div, [data-testid="stThumbValue"], [data-testid="stSliderTickBarMin"], [data-testid="stSliderTickBarMax"] {
         color: #0369a1 !important;
         font-weight: 600 !important;
+        font-size: 14px !important;
+    }
+
+    /* Khung kết quả dự đoán hàng đầu */
+    .prediction-box {
+        background: #f0f9ff;
+        border: 1px solid #bae6fd;
+        border-radius: 12px;
+        padding: 20px 24px;
+        margin-bottom: 20px;
+    }
+    .prediction-label {
+        font-size: 24px;
+        font-weight: 800;
+        color: #0369a1;
+        margin-top: 4px;
+        margin-bottom: 6px;
+    }
+    .prediction-sub {
+        font-size: 14px;
+        color: #475569;
+    }
+
+    /* Thanh tiến trình phân phối xác suất */
+    .stProgress > div > div > div > div {
+        background-color: #0284c7;
     }
 
     /* Ẩn bớt footer và menu mặc định */
@@ -197,7 +212,6 @@ def get_model():
             except Exception:
                 pass
                 
-    # Nếu chưa có weights finetuned trên máy, nạp trọng số pre-trained mặc định để demo luôn hoạt động
     if loaded_checkpoint is None:
         try:
             pt_model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
@@ -240,7 +254,7 @@ with col_left:
     uploaded_file = st.file_uploader(
         label="Chọn hoặc kéo thả file ảnh từ máy tính (JPG, PNG, JPEG)",
         type=["jpg", "png", "jpeg"],
-        help="Hệ thống hỗ trợ các định dạng ảnh thông dụng."
+        help="Hệ thống tự động tiền xử lý ảnh về kích thước 224x224 và chuẩn hóa chuẩn ImageNet."
     )
     
     top_k = st.slider(
@@ -256,9 +270,9 @@ with col_left:
         st.image(image, caption="Ảnh đầu vào đã tải lên", use_container_width=True)
     else:
         st.markdown("""
-        <div style="border: 2px dashed #cbd5e1; border-radius: 10px; padding: 40px 20px; text-align: center; color: #64748b; background-color: #ffffff; margin-top: 10px;">
-            <p style="font-size: 15px; margin: 0; font-weight: 500;">Chưa có ảnh nào được tải lên</p>
-            <p style="font-size: 13px; color: #94a3b8; margin-top: 6px;">Hãy bấm "Browse files" ở trên hoặc kéo thả ảnh vào khung này để kiểm thử.</p>
+        <div style="border: 2px dashed #cbd5e1; border-radius: 12px; padding: 48px 20px; text-align: center; color: #64748b; background-color: #ffffff; margin-top: 16px;">
+            <div style="font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 6px;">Khu vực hiển thị ảnh kiểm thử</div>
+            <div style="font-size: 13px; color: #94a3b8;">Sau khi bạn chọn file ở khung trên, hình ảnh xem trước sẽ xuất hiện tại đây.</div>
         </div>
         """, unsafe_allow_html=True)
 
@@ -283,42 +297,43 @@ with col_right:
         # Thẻ hiển thị nhãn dự đoán cao nhất
         st.markdown(f"""
         <div class="prediction-box">
-            <div class="prediction-sub">NHÃN DỰ ĐOÁN CAO NHẤT</div>
+            <div class="prediction-sub">DỰ ĐOÁN HÀNG ĐẦU (TOP-1)</div>
             <div class="prediction-label">{best_label}</div>
-            <div class="prediction-sub">Độ tự tin: <strong>{best_conf:.2f}%</strong> • Thời gian suy luận: <strong>{latency_ms:.1f} ms</strong></div>
+            <div class="prediction-sub">Độ tự tin: <strong>{best_conf:.2f}%</strong> • Thời gian xử lý: <strong>{latency_ms:.1f} ms</strong></div>
         </div>
         """, unsafe_allow_html=True)
         
-        st.markdown("##### Chi tiết xác suất từng lớp:")
+        st.markdown("<p style='font-size: 15px; font-weight: 600; color: #0f172a; margin-bottom: 12px;'>Phân phối xác suất các lớp:</p>", unsafe_allow_html=True)
         for rank, (val, idx) in enumerate(zip(top_values, top_indices), start=1):
             class_name = CLASS_LABELS_VI[CLASSES_RAW[idx]]
             prob_percent = float(val) * 100
             
             col_label, col_val = st.columns([3, 1])
             with col_label:
-                st.write(f"**#{rank}. {class_name}**")
+                st.markdown(f"<span style='font-size: 14px; color: #1e293b; font-weight: 500;'>#{rank}. {class_name}</span>", unsafe_allow_html=True)
             with col_val:
-                st.write(f"`{prob_percent:.2f}%`")
+                st.markdown(f"<span style='font-size: 14px; color: #0369a1; font-weight: 700;'>{prob_percent:.2f}%</span>", unsafe_allow_html=True)
                 
             st.progress(float(val))
             
-        # Thông tin mô hình và phần cứng
         st.markdown("---")
-        ckpt_name = os.path.basename(checkpoint_path) if checkpoint_path else "Mô hình ResNet-18 (Weights mặc định)"
-        st.caption(f"Trọng số sử dụng: `{ckpt_name}` | Thiết bị suy luận: `{device.type.upper()}`")
+        ckpt_name = os.path.basename(checkpoint_path) if checkpoint_path else "ResNet-18 (Weights mặc định)"
+        st.caption(f"Trọng số sử dụng: `{ckpt_name}` | Thiết bị tính toán: `{device.type.upper()}`")
         
     else:
         st.markdown("""
-        <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 50px 24px; text-align: center; color: #64748b; margin-top: 10px;">
-            <p style="font-size: 16px; font-weight: 500; color: #0369a1; margin-bottom: 8px;">Đang chờ dữ liệu đầu vào</p>
-            <p style="font-size: 13px; color: #94a3b8; margin: 0;">Vui lòng tải một hình ảnh từ thiết bị ở ô bên trái để xem phân phối xác suất và kết quả nhận diện từ mô hình.</p>
+        <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 75px 24px; text-align: center; color: #64748b; margin-top: 16px;">
+            <div style="font-size: 18px; font-weight: 600; color: #0369a1; margin-bottom: 10px;">Chờ dữ liệu phân tích</div>
+            <div style="font-size: 14px; color: #64748b; line-height: 1.6; max-width: 420px; margin: 0 auto;">
+                Hãy tải một hình ảnh từ thiết bị ở cột bên trái để mô hình ResNet-18 bắt đầu trích xuất đặc trưng và dự đoán nhãn phân loại.
+            </div>
         </div>
         """, unsafe_allow_html=True)
 
 # Footer trang
 st.markdown("---")
 st.markdown("""
-<div style="text-align: center; color: #64748b; font-size: 13px; padding-bottom: 20px;">
-    Đồ án môn học: Mạng Nơ-ron Sâu (Deep Neural Networks) • <strong>Sinh viên: BLong1501</strong>
+<div style="text-align: center; color: #64748b; font-size: 13px; padding-bottom: 24px;">
+    Đồ án môn học: Mạng Nơ-ron Sâu (Deep Neural Networks) • <strong>Sinh viên thực hiện: BLong1501</strong>
 </div>
 """, unsafe_allow_html=True)
