@@ -1,0 +1,7 @@
+# Thư viện phục vụ chạy mô hình và giao diện Demo (Gradio / Hugging Face Spaces)
+torch>=2.0.0
+torchvision>=0.15.0
+gradio>=4.0.0
+Pillow>=9.5.0
+numpy>=1.23.0
+

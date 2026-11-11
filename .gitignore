@@ -1,0 +1,23 @@
+# Bỏ qua dữ liệu huấn luyện nặng (tải tự động bằng code)
+data/
+*.tar.gz
+*.tar
+
+# Bỏ qua checkpoint nặng nếu vượt giới hạn GitHub (GitHub chặn file > 100MB)
+*.pt
+*.pth
+
+# Python / Jupyter cache
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+
+# Virtual Environment
+venv/
+env/
+.venv/
+
+# OS specific files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,100 @@
+Bài tập lớn môn mạng nơ-ron sâu
+Môn học: Deep Neural Networks
+Hình thức: nhóm 2–3 sinh viên
+Môi trường: Google Colab (GPU T4) · PyTorch
+1. Bối cảnh
+Một công ty muốn xây dựng bộ phân loại ảnh cho 10 lớp đồ vật và động vật (CIFAR-10),
+nhưng chỉ có 5.000 ảnh đã gán nhãn để huấn luyện. Huấn luyện từ đầu với lượng dữ liệu
+này cho kết quả kém. Nhiệm vụ của nhóm là:
+1. Hiểu và giải thích được vì sao từng thành phần khi huấn luyện (optimizer, learning rate,
+khởi tạo, regularization) ảnh hưởng tới kết quả.
+2. Dùng transfer learning và fine-tuning để vượt qua mô hình baseline do giảng viên cung
+cấp.
+3. Thể hiện rằng nhóm biết debug, theo dõi và gỡ lỗi quá trình huấn luyện.
+4. Đóng gói mô hình tốt nhất thành một demo có giao diện.
+2. Dữ liệu
+Tập Nguồn Số ảnh
+train lấy từ CIFAR-10 train, 500 ảnh/lớp 5.000
+val lấy từ CIFAR-10 train, 500
+ảnh/lớp, không trùng train
+5.000
+test CIFAR-10 test chính thức 10.000
+Chỉ số ảnh của train và val được sinh cố định bởi hàm make_splits(seed=42)
+trong notebooks/baseline.ipynb. Mọi nhóm phải dùng đúng hàm này.
+Luật bắt buộc:
+● Không dùng thêm ảnh nào từ 45.000 ảnh CIFAR-10 train còn lại, kể cả ảnh không nhãn.
+● Không dùng mô hình đã được pretrain hoặc fine-tune trên CIFAR-10/CIFAR-100.
+● Cố định seed và báo cáo kết quả trung bình ± độ lệch chuẩn trên ít nhất 3 seed cho mô
+hình cuối cùng.
+3. Baseline
+notebooks/baseline.ipynb
+4. Nội dung cần thực hiện
+Phần A–D là bắt buộc. Phần E chọn ít nhất 1 hướng.
+Phần A: Thuật toán tối ưu (SGD, Momentum, RMSProp, Adam)
+A1. Tự cài đặt 4 optimizer dưới dạng lớp kế thừa torch.optim.Optimizer, không gọi
+torch.optim.SGD/Adam/RMSprop bên trong. Viết công thức cập nhật trong báo cáo,
+kèm ý nghĩa từng thành phần (vận tốc, trung bình bình phương gradient, bias correction, ε).
+A2. Kiểm chứng bản tự cài: chạy song song với optimizer của PyTorch trên cùng mô hình
+nhỏ, cùng khởi tạo, cùng dữ liệu trong 100 bước. Sai khác tham số phải < 1e-5.
+Phần B: Learning rate, khởi tạo trọng số, regularization
+B1. LR range test: tăng LR theo cấp số nhân từ 1e-7 đến 10 trong một epoch, vẽ loss theo
+LR và giải thích cách chọn LR từ đồ thị.
+B2. LR schedule: so sánh ít nhất 3 schedule (constant, step decay, cosine, warmup + cosine,
+OneCycle, …). Vẽ LR thực tế theo từng bước để chứng minh schedule chạy đúng như mong
+muốn.
+B3. Khởi tạo trọng số: trên một CNN nhỏ huấn luyện từ đầu (≥ 6 lớp conv, không
+BatchNorm), so sánh: khởi tạo toàn 0, N(0, 1), Xavier/Glorot, He/Kaiming. Với mỗi cách,
+vẽ histogram activation và độ lớn gradient của từng lớp ở bước đầu tiên. Giải thích kết quả
+bằng lý thuyết phương sai.
+B4. Regularization: ablation trên mô hình chính, gồm có/không Dropout, có/không
+BatchNorm (với CNN tự xây), weight decay, data augmentation. Lập bảng train acc, val acc
+và khoảng cách train–val cho từng cấu hình.
+Phần C: Transfer learning và fine-tuning
+C1. Sử dụng bốn phương pháp đã học trên cùng dữ liệu huấn luyện:
+1. Huấn luyện từ đầu (scratch), ResNet-18 khởi tạo ngẫu nhiên.
+2. Linear probe (đóng băng backbone).
+3. Full fine-tuning với learning rate nhỏ.
+4. Fine-tuning với discriminative learning rate (dùng parameter group: LR nhỏ cho lớp
+đầu, LR lớn cho head).
+
+C2. Đường cong theo lượng dữ liệu: chạy cả 4 chiến lược với 1%, 10% và 100% tập
+train (50 / 500 / 5.000 ảnh). Vẽ accuracy theo lượng dữ liệu (trục x dạng log). Phân tích: ở
+mức dữ liệu nào thì scratch bắt đầu đuổi kịp, và vì sao.
+C3. BatchNorm khi fine-tune: so sánh việc để BN ở chế độ train và đóng băng running
+statistics, với batch size lớn (128) và nhỏ (8). Giải thích kết quả.
+C5. Trả lời các câu hỏi sau:
+● Khi nào nên chọn linear probe thay vì full fine-tuning?
+● Vì sao một learning rate tốt khi train từ đầu lại phá hỏng mô hình pretrained?
+● Nhóm quyết định số lớp cần unfreeze như thế nào?
+Phần D: Huấn luyện và gỡ lỗi
+D1. Sanity check bắt buộc trước khi huấn luyện thật, trình bày bằng số liệu và hình trong
+báo cáo:
+● Loss ban đầu ≈ ln(10) ≈ 2,30. Nếu không, giải thích vì sao.
+● Overfit được một batch duy nhất (loss → gần 0).
+● Hiển thị một batch sau augmentation kèm nhãn.
+● Shuffled-label test: huấn luyện với nhãn bị xáo trộn, val accuracy phải ≈ 10%.
+D2. Nhật ký gỡ lỗi: ghi lại ít nhất 2 lỗi thật nhóm gặp phải trong quá trình làm bài, gồm triệu
+chứng, cách phát hiện và cách sửa.
+Phần E: Nghiên cứu mở rộng (chọn ít nhất 1)
+Phần này đánh giá khả năng nghiên cứu vượt ra ngoài nội dung môn học. Mỗi hướng cần có:
+tóm tắt bài báo hoặc phương pháp gốc, thí nghiệm có đối chứng và phân tích.
+● PEFT: LoRA hoặc Adapter cho một backbone lớn hơn (ViT-S, ConvNeXt-T) bằng thư
+viện peft. So sánh accuracy và số tham số trainable với full fine-tuning.
+● Optimizer hiện đại: AdamW (so với Adam + L2), Lion, SAM, Lookahead, … Giải thích
+cơ chế và kiểm chứng.
+● Regularization nâng cao: Mixup, CutMix, label smoothing, RandAugment, stochastic
+depth.
+● Knowledge distillation: teacher lớn → student ResNet-18.
+● Domain shift / negative transfer: đem pipeline sang một tập khác lệch miền ImageNet
+(EuroSAT, ảnh y tế MedMNIST, …) và phân tích.
+● Độ tin cậy và giải thích mô hình: calibration (ECE, temperature scaling), Grad-CAM,
+phân tích lỗi theo lớp.
+● Hướng khác do nhóm đề xuất, cần được giảng viên duyệt trước tuần 3.
+5. Sản phẩm nộp
+1. Báo cáo (PDF, 15–25 trang, không tính phụ lục) theo report_template.md.
+2. Mã nguồn: notebook(s) chạy được trên Colab từ đầu đến cuối, kèm file cấu hình và log thí
+nghiệm. Ghi rõ lệnh hoặc cell để tái lập kết quả cuối.
+3. Checkpoint mô hình tốt nhất (link Google Drive hoặc Hugging Face).
+4. Demo: giao diện bất kỳ (Gradio, Streamlit, web app, …) cho phép tải ảnh lên và nhận topk dự đoán kèm xác suất. Có mẫu khởi đầu tại demo/app_gradio.py. Khuyến khích
+deploy lên Hugging Face Spaces.
+5. Thuyết trình 10 phút + 5 phút vấn đáp, có demo trực tiếp.
