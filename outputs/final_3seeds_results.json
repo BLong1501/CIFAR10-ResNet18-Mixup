@@ -1,0 +1,39 @@
+{
+  "experiment": "Final Model 3-Seed Benchmark Evaluation",
+  "model": "ResNet-18 (Pretrained ImageNet1K_V1)",
+  "strategy": "Full Fine-tuning + Mixup (alpha=0.1) + CosineAnnealingLR",
+  "seeds_evaluated": [42, 123, 999],
+  "individual_results": [
+    {
+      "seed": 42,
+      "best_val_accuracy": 89.44,
+      "test_accuracy": 89.12
+    },
+    {
+      "seed": 123,
+      "best_val_accuracy": 89.52,
+      "test_accuracy": 89.27
+    },
+    {
+      "seed": 999,
+      "best_val_accuracy": 90.04,
+      "test_accuracy": 89.76
+    }
+  ],
+  "summary_metrics": {
+    "val_accuracy_mean": 89.67,
+    "val_accuracy_std": 0.33,
+    "test_accuracy_mean": 89.38,
+    "test_accuracy_std": 0.33,
+    "best_seed": 999,
+    "best_val_record": 90.04,
+    "best_test_record": 89.76
+  },
+  "best_checkpoint_saved": "./outputs/best_model_resnet18.pt",
+  "baseline_comparison": {
+    "baseline_val_accuracy": 81.68,
+    "baseline_test_accuracy": 81.35,
+    "absolute_improvement_val": "+7.99%",
+    "absolute_improvement_test": "+8.03%"
+  }
+}

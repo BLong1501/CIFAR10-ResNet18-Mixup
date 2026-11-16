@@ -1,0 +1,36 @@
+{
+  "project_name": "CIFAR-10 ResNet-18 Mixup Benchmark",
+  "dataset": {
+    "name": "CIFAR-10",
+    "data_dir": "./data",
+    "num_classes": 10,
+    "split_seed": 42,
+    "train_samples": 5000,
+    "val_samples": 5000,
+    "test_samples": 10000
+  },
+  "model": {
+    "architecture": "resnet18",
+    "pretrained": "ImageNet1K_V1",
+    "input_size": 224
+  },
+  "hyperparameters": {
+    "batch_size": 64,
+    "epochs": 10,
+    "optimizer": "SGD",
+    "learning_rate": 0.001,
+    "momentum": 0.9,
+    "weight_decay": 0.0001,
+    "scheduler": "CosineAnnealingLR",
+    "T_max": 10,
+    "mixup_alpha": 0.1
+  },
+  "evaluation": {
+    "benchmark_seeds": [42, 123, 999],
+    "output_checkpoint": "./outputs/best_model_resnet18.pt",
+    "val_accuracy_mean": 89.67,
+    "val_accuracy_std": 0.33,
+    "test_accuracy_mean": 89.38,
+    "test_accuracy_std": 0.33
+  }
+}

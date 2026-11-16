@@ -1,0 +1,67 @@
+# ==============================================================================
+# CẤU HÌNH SIÊU THAM SỐ MÔ HÌNH CUỐI CÙNG (FINAL MODEL CONFIGURATION)
+# Đồ án môn học: Mạng Nơ-ron Sâu (Deep Neural Networks) - CIFAR-10
+# Nhóm sinh viên: BLong1501, Lê Đức Vũ, Nguyễn Văn Trường
+# ==============================================================================
+
+dataset:
+  name: "CIFAR-10"
+  data_dir: "./data"
+  num_classes: 10
+  classes:
+    - airplane
+    - automobile
+    - bird
+    - cat
+    - deer
+    - dog
+    - frog
+    - horse
+    - ship
+    - truck
+  split_seed: 42
+  train_samples_per_class: 500
+  val_samples_per_class: 500
+  total_train_samples: 5000
+  total_val_samples: 5000
+  total_test_samples: 10000
+
+model:
+  architecture: "resnet18"
+  pretrained_weights: "ImageNet1K_V1"
+  input_resolution: 224
+  mean: [0.485, 0.456, 0.406]
+  std: [0.229, 0.224, 0.225]
+
+training:
+  strategy: "full_fine_tuning"
+  epochs: 10
+  batch_size: 64
+  optimizer:
+    name: "SGD"
+    lr: 0.001
+    momentum: 0.9
+    weight_decay: 0.0001
+  scheduler:
+    name: "CosineAnnealingLR"
+    T_max: 10
+    eta_min: 0.0
+
+regularization:
+  mixup:
+    enabled: true
+    alpha: 0.1
+  data_augmentation:
+    resize: 224
+    random_horizontal_flip: true
+
+evaluation:
+  benchmark_seeds: [42, 123, 999]
+  checkpoint_path: "./outputs/best_model_resnet18.pt"
+  expected_results:
+    val_accuracy_mean: 89.67
+    val_accuracy_std: 0.33
+    test_accuracy_mean: 89.38
+    test_accuracy_std: 0.33
+    best_seed: 999
+    record_accuracy: 90.04

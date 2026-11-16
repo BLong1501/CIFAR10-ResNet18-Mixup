@@ -1,0 +1,49 @@
+{
+  "experiment": "Part E: Mixup Hyperparameter Sweep & Calibration (ECE)",
+  "backbone": "ResNet-18 (Pretrained)",
+  "dataset_split": "CIFAR-10 (5,000 train images)",
+  "sweep_parameter": "mixup_alpha",
+  "evaluated_alphas": [0.0, 0.1, 0.2, 0.4, 0.8],
+  "results": [
+    {
+      "alpha": 0.0,
+      "best_val_accuracy": 89.26,
+      "macro_f1": 89.26,
+      "val_loss": 0.3332,
+      "ece_percent": 3.60,
+      "note": "ERM Baseline (No Mixup)"
+    },
+    {
+      "alpha": 0.1,
+      "best_val_accuracy": 89.60,
+      "macro_f1": 89.61,
+      "val_loss": 0.3432,
+      "ece_percent": 6.76,
+      "note": "Optimal Sweet Spot (Selected for Final Model)"
+    },
+    {
+      "alpha": 0.2,
+      "best_val_accuracy": 88.82,
+      "macro_f1": 88.83,
+      "val_loss": 0.3963,
+      "ece_percent": 9.40,
+      "note": "Slight over-regularization"
+    },
+    {
+      "alpha": 0.4,
+      "best_val_accuracy": 88.80,
+      "macro_f1": 88.80,
+      "val_loss": 0.4338,
+      "ece_percent": 12.83,
+      "note": "Moderate over-regularization"
+    },
+    {
+      "alpha": 0.8,
+      "best_val_accuracy": 87.58,
+      "macro_f1": 87.58,
+      "val_loss": 0.5296,
+      "ece_percent": 17.52,
+      "note": "Severe underfitting / calibration penalty"
+    }
+  ]
+}
